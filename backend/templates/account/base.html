@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  {% load static %}
+  <head>
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %}
+    {% endblock %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="{% static './dist/css/tabler.min.css' %}" rel="stylesheet"/>
+    <link href="{% static './dist/css/tabler-flags.min.css' %}" rel="stylesheet"/>
+    <link href="{% static './dist/css/tabler-payments.min.css' %}" rel="stylesheet"/>
+    <link href="{% static './dist/css/tabler-vendors.min.css' %}" rel="stylesheet"/>
+    <link href="{% static './dist/css/demo.min.css' %}" rel="stylesheet"/>
+  </head>
+  <body class = "border-top-wide border-primary d-flex flex-column">
+    {% block body %}
+    
+    {% comment %} {% include 'account/message.html' %} {% endcomment %}
+    {% comment %} <div>
+      <strong>Menu:</strong>
+      <ul>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+        <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+        {% else %}
+        <li><a href="{% url 'account_login' %}">Sign In</a></li>
+        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+        {% endif %}
+      </ul>
+    </div> {% endcomment %}
+    <div class="page page-center">
+      <div class="container-tight py-4">
+        <div class="text-center mb-4">
+          <a href="#" class="navbar-brand navbar-brand-autodark"><img src="{% static './static/logo.svg' %}" height="36" alt=""></a>
+        </div>    
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </body>
+  {% endblock %}
+  {% block extra_body %}
+  {% endblock %}
+
+  {% block extra_script %}
+  {% endblock %}
+
+  </body>
+</html>

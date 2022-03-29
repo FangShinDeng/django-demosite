@@ -1,0 +1,111 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block extra_head %} 
+  <script src="{% static './dist/js/tabler.min.js' %}"></script>
+  <script src="{% static './dist/js/demo.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+
+{% comment %} <h1>{% trans "Sign In" %}</h1> {% endcomment %}
+
+{% comment %} {% get_providers as socialaccount_providers %}
+
+{% if socialaccount_providers %}
+<p>{% blocktrans with site.name as site_name %}Please sign in with one
+of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
+for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+
+<div class="socialaccount_ballot">
+
+  <ul class="socialaccount_providers">
+    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+  </ul>
+
+  <div class="login-or">{% trans 'or' %}</div>
+
+</div> {% endcomment %}
+
+{% comment %} {% include "socialaccount/snippets/login_extra.html" %} {% endcomment %}
+
+{% comment %} {% else %}
+<p>{% blocktrans %}If you have not created an account yet, then please
+<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+{% endif %} {% endcomment %}
+{% comment %} 
+<form class="login" method="POST" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {{ form }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+</form> {% endcomment %}
+
+<form class="card card-md" action="{% url 'account_login' %}" method="POST" autocomplete="on">
+  {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% endif %}
+  {% csrf_token %}
+  <div class="card-body">
+    <h2 class="card-title text-center mb-4">{% blocktrans %}Login to your account{% endblocktrans %}</h2>
+    {% comment %} {{ form.errors }} {% endcomment %}
+    {% include 'form_message.html' %} 
+    <div class="mb-3">
+      <label class="form-label">{% trans "Email" %}</label>
+      <input type="text" class="form-control" name="login" placeholder="Enter Username">
+    </div>
+    <div class="mb-2">
+      <label class="form-label">
+        {% trans "Password" %}
+        <span class="form-label-description">
+          <a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+        </span>
+      </label>
+      <div class="input-group input-group-flat">
+        <input type="password" id="password" class="form-control"  name="password" placeholder="Password"  autocomplete="off">
+        <span class="input-group-text">
+          <a id="togglePassword" href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="mb-2">
+      <label class="form-check">
+        <input type="checkbox" class="form-check-input"/>
+        <span class="form-check-label">Remember me on this device</span>
+      </label>
+    </div>
+    <div class="input-group input-group-flat">
+      {{form.captcha}}
+    </div>
+    <div class="form-footer">
+      <button type="submit" class="btn btn-primary w-100">{% trans "Sign In" %}</button>
+    </div>
+  </div>
+</form>
+<div class="text-center text-muted mt-3">
+  Don't have account yet? <a href="{% url 'account_signup' %}" tabindex="-1">Sign up</a>
+</div>
+
+{% endblock %}
+
+{% block extra_script %}
+  <script>
+    const togglePassword = document.querySelector("#togglePassword");
+    const password = document.querySelector("#password");
+    togglePassword.addEventListener("click", function () {
+        // toggle the type attribute
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        
+        // toggle the icon
+        this.classList.toggle("bi-eye");
+    });
+  </script>
+{% endblock %}

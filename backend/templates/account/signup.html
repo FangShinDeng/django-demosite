@@ -1,0 +1,144 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block extra_head %}
+  <script src="{% static './dist/js/tabler.min.js' %}"></script>
+  <script src="{% static './dist/js/demo.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+{% comment %} <h1>{% trans "Sign Up" %}</h1> {% endcomment %}
+
+{% comment %} <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p> {% endcomment %}
+
+{% comment %} <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+</form> {% endcomment %}
+
+
+
+<form class="card card-md signup" id="signup_form" action="{% url 'account_signup' %}" method="POST" id="register-form">
+  {% csrf_token %}
+  {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% endif %}
+  <div class="card-body">
+    <h2 class="card-title text-center mb-4">{% blocktrans %}Create new account {% endblocktrans %}</h2>
+    {% include 'form_message.html' %}
+    <div class="mb-3">
+      <label class="form-label">{% trans "Username" %}</label>
+      <input type="text" name="username" class="form-control" placeholder="Enter name">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{% blocktrans %}Email address{% endblocktrans %}</label>
+      <input type="email" name="email" class="form-control" placeholder="Enter email">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{% trans "Password" %}</label>
+      <div class="input-group input-group-flat">
+        <input type="password" name="password1" id="password1" class="form-control" placeholder="Password"  autocomplete="off">
+        <span class="input-group-text">
+          <a id="togglePassword1" href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{% blocktrans %}Confirm Password{% endblocktrans %}</label>
+      <div class="input-group input-group-flat">
+        <input type="password" name="password2" id="password2" class="form-control" placeholder="Password"  autocomplete="off">
+        <span class="input-group-text">
+          <a id="togglePassword2" href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-check">
+        <input id="terms_of_service" type="checkbox" class="form-check-input"/>
+        <span class="form-check-label">Agree the <a href="{% url 'terms_of_service' %}" tabindex="-1">terms and policy</a>.</span>
+      </label>
+    </div>
+    <div class="form-footer">
+      <button id="register" type="submit" class="btn btn-primary w-100">Create new account</button>
+    </div>
+  </div>
+</form>
+
+<div class="text-center text-muted mt-3">
+  Already have account? <a href="{% url 'account_login' %}" tabindex="-1">Sign in</a>
+</div>
+
+  <!-- Modal pop up -->
+  <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Alert</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Please confirm and agree our terms and policy.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary me-auto" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>    
+{% endblock %}
+
+
+{% block extra_script %}
+  <!-- Libs JS -->
+  <!-- Tabler Core -->
+  <script>
+    // show hide password
+    const togglePassword1 = document.querySelector("#togglePassword1");
+    const password1 = document.querySelector("#password1");
+    togglePassword1.addEventListener("click", function () {
+      // toggle the type attribute
+      const type = password1.getAttribute("type") === "password" ? "text" : "password";
+      password1.setAttribute("type", type);
+      
+      // toggle the icon
+      this.classList.toggle("bi-eye");
+    });
+
+    // show hide confirm password
+    const togglePassword2 = document.querySelector("#togglePassword2");
+    const password2 = document.querySelector("#password2");
+    togglePassword2.addEventListener("click", function () {
+      // toggle the type attribute
+      const type = password2.getAttribute("type") === "password" ? "text" : "password";
+      password2.setAttribute("type", type);
+      
+      // toggle the icon
+      this.classList.toggle("bi-eye");
+    });
+
+
+    // if didn't confirm terms_of_service, show alert
+    const signup_form = document.querySelector("#signup_form");
+    signup_form.addEventListener("submit", function (evt) {
+      let terms_of_service = document.querySelector("#terms_of_service");
+      if (!terms_of_service.checked){
+        evt.preventDefault();
+        // let modal = document.querySelector("#Modal");
+        let Modal = new bootstrap.Modal(document.getElementById('Modal'), {
+          keyboard: false
+        });
+        Modal.show();
+      }
+    });
+
+  </script>
+{% endblock %}
