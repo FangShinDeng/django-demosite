@@ -67,6 +67,9 @@
         <span class="form-check-label">Agree the <a href="{% url 'terms_of_service' %}" tabindex="-1">terms and policy</a>.</span>
       </label>
     </div>
+    <div class="input-group input-group-flat">
+      {{form.captcha}}
+    </div>
     <div class="form-footer">
       <button id="register" type="submit" class="btn btn-primary w-100">Create new account</button>
     </div>

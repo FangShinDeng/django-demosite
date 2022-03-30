@@ -173,7 +173,8 @@ ACCOUNT_RATE_LIMITS = {
 }
 
 ACCOUNT_FORMS = {
-    "login": "account.forms.CaptchaTestForm",
+    "login": "account.forms.CustomLoginForm",
+    "signup": "account.forms.CustomSignupForm",
 }
 
 

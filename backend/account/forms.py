@@ -24,7 +24,10 @@
 
 from django import forms
 from captcha.fields import CaptchaField
-from allauth.account.forms import LoginForm
+from allauth.account.forms import LoginForm, SignupForm
 
-class CaptchaTestForm(LoginForm):
+class CustomLoginForm(LoginForm):
+    captcha = CaptchaField()
+
+class CustomSignupForm(SignupForm):
     captcha = CaptchaField()
