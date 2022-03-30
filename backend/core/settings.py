@@ -17,6 +17,9 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Config
+config = configparser.ConfigParser()
+config.read(os.path.join(BASE_DIR, "core/config.ini"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -45,7 +48,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
-    'captcha', # django-simple-captcha
+    'captcha', # django-simple-captcha 
+    'recaptcha', # django-recaptcha
 ]
 
 MIDDLEWARE = [
@@ -172,15 +176,20 @@ ACCOUNT_RATE_LIMITS = {
     # NOTE: Login is already protected via `ACCOUNT_LOGIN_ATTEMPTS_LIMIT`
 }
 
+CAPTCHA_METHOD_LIST = ["django-simple-captcha", "django-recaptcha"]
+CAPTCHA_METHOD = "django-simple-captcha"
+
+RECAPTCHA_PUBLIC_KEY = config['Google-reCaptchaV2']['client_secret_key']
+RECAPTCHA_PRIVATE_KEY = config['Google-reCaptchaV2']['server_secret_key']
+# RECAPTCHA_PROXY  = { 'http' : 'http://127.0.0.1:8000' , 'https' : 'https://127.0.0.1:8000' }
+# SILENCED_SYSTEM_CHECKS  = [ 'captcha.recaptcha_test_key_error' ]
+
+# captcha
 ACCOUNT_FORMS = {
-    "login": "account.forms.CustomLoginForm",
+    "login": "account.forms.RecaptchaLoginForm",
     "signup": "account.forms.CustomSignupForm",
 }
 
-
-# Config
-config = configparser.ConfigParser()
-config.read(os.path.join(BASE_DIR, "core/config.ini"))
 
 # SMTP Configuration
 EMAIL_HOST = 'smtp.gmail.com'  # 這裡使用QQ的smtp服務

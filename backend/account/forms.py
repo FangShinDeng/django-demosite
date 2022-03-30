@@ -23,11 +23,17 @@
 #             visible.field.widget.attrs['placeholder'] = 'Please input the email'
 
 from django import forms
+from django.conf import settings
 from captcha.fields import CaptchaField
 from allauth.account.forms import LoginForm, SignupForm
+from recaptcha.fields import ReCaptchaField
+from recaptcha.widgets import ReCaptchaV3
 
 class CustomLoginForm(LoginForm):
     captcha = CaptchaField()
 
 class CustomSignupForm(SignupForm):
     captcha = CaptchaField()
+
+class RecaptchaLoginForm(LoginForm):
+    captcha = ReCaptchaField()
