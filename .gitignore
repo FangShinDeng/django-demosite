@@ -1,4 +1,6 @@
 backend/account/__pycache__/
 backend/core/__pycache__/
 backend/core/config.ini
+backend/log/
+*.mmdb
 *.pyc

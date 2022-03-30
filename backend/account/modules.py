@@ -45,4 +45,15 @@ def send_activate_mail(request, user) -> None:
         html_template="emails/email_activate.html",
         context=context
         )
-    
+
+def get_ip(request) -> str:
+    client_ip = ""
+    http_client_ip = request.META.get("HTTP_CLIENT_IP", "")
+    http_x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR", "")
+    if http_client_ip:
+        client_ip = http_client_ip
+    elif http_x_forwarded_for:
+        client_ip = http_x_forwarded_for.split(',')[-1]
+    else:
+        client_ip = request.META.get('REMOTE_ADDR')
+    return client_ip

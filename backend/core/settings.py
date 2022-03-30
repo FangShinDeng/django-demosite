@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import configparser
 import os
+from datetime import date
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -204,3 +205,55 @@ GRAPH_MODELS = {
     'all_applications': True,
     'group_models': True,
 }
+
+# LOGGING
+
+# SET LOG
+logname = "log"
+if logname not in os.listdir(BASE_DIR):
+    os.mkdir(logname)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'new_add': {
+            '()': 'middleware.middlewares.RequestLogFilter',
+        }
+    },
+    'formatters':{
+        'info-formatter': {
+            'format': '[%(asctime)s][%(source_ip)s] %(levelname)s : %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+    },
+    'handlers':{
+        'file': {
+            'level': 'INFO',
+            'formatter': 'info-formatter',
+            'filters': ['new_add'],
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, logname, f'{str(date.today())}.txt'),
+    },
+    'console': {
+        'level': 'DEBUG',
+        'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+    },
+    'app-logger': {
+        'handlers': ['file', 'console'],
+        'level': 'CRITICAL',
+        'propagate': True,
+        },
+    },
+}
+
+# GEOIP2
+GEOIP_PATH = os.path.join(BASE_DIR)
+

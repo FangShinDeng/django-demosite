@@ -1,0 +1,14 @@
+<ul>
+    {% for key, value in meta.items %} 
+        <li>{{key}}: {{value}}</li>
+    {% endfor %}
+
+    a: {{a}}
+</ul>
+{% comment %} <ul>
+    {% for key, value in meta.items %} 
+        {% if key in show_list %}
+            <li>{{key}}: {{value}}</li>
+        {% endif %}
+    {% endfor %}
+</ul> {% endcomment %}
