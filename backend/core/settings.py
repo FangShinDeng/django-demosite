@@ -187,7 +187,8 @@ RECAPTCHA_PRIVATE_KEY = config['Google-reCaptchaV2']['server_secret_key']
 
 # captcha
 ACCOUNT_FORMS = {
-    "login": "account.forms.RecaptchaLoginForm",
+    # "login": "account.forms.RecaptchaLoginForm",
+    "login": "account.forms.CustomLoginForm",
     "signup": "account.forms.CustomSignupForm",
 }
 

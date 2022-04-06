@@ -96,6 +96,7 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
 {% endblock %}
 
 {% block extra_script %}
+  <script src="{% static './customjs/captcha.js' %}"></script>
   <script>
     const togglePassword = document.querySelector("#togglePassword");
     const password = document.querySelector("#password");
