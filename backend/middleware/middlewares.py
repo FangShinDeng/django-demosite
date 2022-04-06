@@ -26,7 +26,7 @@ class RequestLogMiddleware(MiddlewareMixin):
         if http_client_ip:
             source_ip = http_client_ip
         elif x_forwarded_for:
-            source_ip = x_forwarded_for.split(',')[0]
+            source_ip = x_forwarded_for.split(',')[-1]
         else:
             source_ip = request.META.get('REMOTE_ADDR')
         local.source_ip = source_ip

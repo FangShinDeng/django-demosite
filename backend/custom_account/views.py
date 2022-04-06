@@ -5,6 +5,8 @@ from allauth.account.views import LoginView
 from . import modules
 from django.contrib.gis.geoip2 import GeoIP2
 from geoip2.errors import AddressNotFoundError
+from django.http import JsonResponse
+from captcha.models import CaptchaStore
 
 # Create your views here.
 
@@ -28,7 +30,7 @@ def monitor(request):
     g = GeoIP2()    
     a = client_ip
     try:
-        a = g.city(client_ip)
+        a = g.city("")
     except AddressNotFoundError:
         pass 
 
@@ -41,4 +43,4 @@ def monitor(request):
     return render(request, "monitor.html", context)
 
 # class CustomLoginView(LoginView):
-    
+

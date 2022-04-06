@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'custom_account',
+
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -61,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'middleware.sessionMiddlewares.OneSessionPerUserMiddleware',
+    'middleware.middlewares.RequestLogMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -188,8 +192,8 @@ RECAPTCHA_PRIVATE_KEY = config['Google-reCaptchaV2']['server_secret_key']
 # captcha
 ACCOUNT_FORMS = {
     # "login": "account.forms.RecaptchaLoginForm",
-    "login": "account.forms.CustomLoginForm",
-    "signup": "account.forms.CustomSignupForm",
+    "login": "custom_account.forms.CustomLoginForm",
+    "signup": "custom_account.forms.CustomSignupForm",
 }
 
 
