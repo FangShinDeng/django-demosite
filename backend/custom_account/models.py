@@ -8,7 +8,6 @@ from django.contrib.sessions.models import Session
 # Create your models here.
 class LoggedInUser(models.Model):
     user = models.OneToOneField(USER_MODEL, related_name='logged_in_user', on_delete=models.SET_NULL, null=True)
-    # session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True)
     session = models.ForeignKey(Session, on_delete=models.SET_NULL, blank=True, null=True)
     ip_address = models.GenericIPAddressField(null=True)
     online = models.BooleanField(default=False)
@@ -20,4 +19,16 @@ class LoggedInUser(models.Model):
         return self.user.username
 
     def get_session_data(self):
-        return self.session
+        if self.session:
+            return self.session.get_decoded()
+        else:
+            return None
+
+    def get_session_expire(self):
+        if self.session:
+            return self.session.expire_date
+        else:
+            return None
+
+    class Meta:
+        default_permissions = ("view", "delete")
