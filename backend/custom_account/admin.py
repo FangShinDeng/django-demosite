@@ -50,14 +50,18 @@ class LoggedInUser_Admin(admin.ModelAdmin): # list_display = ['id', 'user_id', '
     def delete_model(self, request: HttpRequest, obj) -> None:
         if obj.session_id:
             Session.objects.filter(session_key=obj.session_id).delete()
-        return super().delete_model(request, obj)
+        obj.online = False
+        obj.session_id = None
+        obj.save()
+        # return super().delete_model(request, obj)
     
     def delete_queryset(self, request: HttpRequest, queryset) -> None:
         session_key_list = queryset.values_list('session', flat=True)
         sessions = Session.objects.filter(session_key__in=session_key_list)
         if sessions:
             sessions.delete()
-        return super().delete_queryset(request, queryset)
+        queryset.update(online=False, session_id=None)
+        # return super().delete_queryset(request, queryset)
 
 
 # class SessionAdmin(admin.ModelAdmin):
