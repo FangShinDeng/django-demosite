@@ -64,6 +64,17 @@ class LoggedInUser_Admin(admin.ModelAdmin): # list_display = ['id', 'user_id', '
         # return super().delete_queryset(request, queryset)
 
 
+class LoginSystem_Admin(admin.ModelAdmin):
+
+    # list_display = ["name", "url", "form_elements_name", "login_element", "password_element", "extra_headers", "redirect_url"]
+    list_display = getModelFields(models.LoginSystem)[:-1]
+    list_display_links = ['name']
+    list_filter = ['name']
+    list_per_page = 50
+
+class LoginSystemStatus_Admin(admin.ModelAdmin):
+    list_display = getModelFields(models.LoginSystemStatus)
+
 # class SessionAdmin(admin.ModelAdmin):
 #     def _session_data(self, obj):
 #         return obj.get_decoded()
@@ -72,6 +83,8 @@ class LoggedInUser_Admin(admin.ModelAdmin): # list_display = ['id', 'user_id', '
 # admin.site.register(Session, SessionAdmin)
 admin.site.register(LogEntry, DjangoAdminLog_Admin)
 admin.site.register(models.LoggedInUser, LoggedInUser_Admin)
+admin.site.register(models.LoginSystem, LoginSystem_Admin)
+admin.site.register(models.LoginSystemStatus, LoginSystemStatus_Admin)
 admin.site.site_header = "Site Header"
 admin.site.site_title = "Site Title"
 admin.site.index_title = "Index Title"
